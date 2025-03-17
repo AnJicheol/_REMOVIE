@@ -8,7 +8,6 @@
 ![동작](https://github.com/user-attachments/assets/7ecb203c-98bc-42f5-b572-4b21aabb6db3)
 
 
-
 ## **📌 설명**
 
 Removie는 **재개봉 영화 알림 서비스** 입니다.
@@ -23,7 +22,8 @@ Removie는 **재개봉 영화 알림 서비스** 입니다.
 - **공개 리포지토리에서 KOBIS 관련 민감한 코드 블록 처리 하였습니다**
 
 ## **📌 인프라**
-![removie_aws](https://github.com/user-attachments/assets/d4c10cb0-b8a4-4991-8bb8-c1e6bb408aa1)
+
+![removie_aws](https://github.com/user-attachments/assets/78e95a07-c467-4249-8ac5-444c102dfcf9)
 
 
 
@@ -37,7 +37,8 @@ Removie는 **재개봉 영화 알림 서비스** 입니다.
 4. 재개봉 영화 FCM
 
 
-![backend](https://github.com/user-attachments/assets/8fbc61f1-faee-4acc-8bac-600c5ce0a4e2)
+![backend](https://github.com/user-attachments/assets/9dd433ef-59d7-4c91-a818-bc053ea40343)
+
 
 
 ## **⚙️ 개발 환경**
@@ -96,7 +97,8 @@ Removie는 **재개봉 영화 알림 서비스** 입니다.
 2. DB 쓰기 작업
 3. Redis 쓰기 작업
 
-![core_server](https://github.com/user-attachments/assets/75a118b5-bfe1-4dc5-836c-d09728a0a28a)
+![core](https://github.com/user-attachments/assets/1082a58c-7a0b-4afe-8dbe-88b8611e254b)
+
 
 
 ## **⚙️ 개발 환경**
