@@ -116,8 +116,8 @@ Removie는 **재개봉 영화 알림 서비스** 입니다.
 - MySQL 
 
 #### **인프라 & 배포 환경**
-
-- AWS EC2
+- EventBridge
+- AWS ECS
 - AWS ECR
 - GitHubAction
 - Docker
