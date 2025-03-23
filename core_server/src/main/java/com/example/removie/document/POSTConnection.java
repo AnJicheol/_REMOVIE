@@ -16,7 +16,7 @@ public class POSTConnection implements DocConnection {
 
     @Override
     public Document response() throws IOException {
-        return connection.post();
+        return connection.timeout(15000).post();
     }
 
     @Override
