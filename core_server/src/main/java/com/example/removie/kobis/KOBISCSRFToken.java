@@ -1,7 +1,6 @@
 package com.example.removie.kobis;
 
 import com.example.removie.document.kobis.KOBIS;
-import com.example.removie.kobis.exception.DocIOException;
 import com.example.removie.kobis.exception.KOBISCSRFTokenFailException;
 import com.example.removie.kobis.exception.KOBISCSRFTokenNullException;
 import com.example.removie.retry.IORetry;
@@ -36,31 +35,23 @@ public class KOBISCSRFToken {
      * @throws KOBISCSRFTokenNullException 토큰 파싱에 실패 했을 경우 발생 합니다.
      * @throws KOBISCSRFTokenFailException 토큰 파싱에 실패 했을 경우 발생 합니다.
      */
+    @IORetry
     @Cacheable(value = "token")
     public String getCSRFToken(){
-        Element csrfTokenE = responseDoc().selectFirst(KOBIS_CSRF_TOKEN_ELEMENT_CSS_QUERY);
 
-        if(csrfTokenE == null){
-
-            logger.error("페이지 변경 가능성 있음 - 토큰 Element 파싱 실패 : Element 가 NULL");
-            throw new KOBISCSRFTokenNullException("토큰 Element 파싱 실패 : Element 가 NULL");
-        }
-
-        if(csrfTokenE.attr(KOBIS_CSRF_TOKEN_ATTR_KEY).isEmpty()){
-
-            logger.error("페이지 변경 가능성 있음 - 토큰 Element 파싱 실패 : Element 가 비어 있음");
-            throw new KOBISCSRFTokenFailException("토큰 Element 파싱 실패 : Element 가 비어 있음");
-        }
-        return csrfTokenE.attr(KOBIS_CSRF_TOKEN_ATTR_KEY);
-    }
-
-    @IORetry
-    private Document responseDoc(){
         try {
-            return Jsoup.connect(KOBIS.KOBIS_MAIN_URI.getValue()).get();
+            Document document = Jsoup.connect(KOBIS.KOBIS_MAIN_URI.getValue()).timeout(15000).get();
+            Element csrfTokenE = document.selectFirst(KOBIS_CSRF_TOKEN_ELEMENT_CSS_QUERY);
 
+            if(csrfTokenE == null){
+
+                logger.error("페이지 변경 가능성 있음 - 토큰 Element 파싱 실패 : Element 가 NULL");
+                throw new KOBISCSRFTokenNullException("토큰 Element 파싱 실패 : Element 가 NULL");
+            }
+
+            return csrfTokenE.attr(KOBIS_CSRF_TOKEN_ATTR_KEY);
         } catch (IOException e) {
-            throw new DocIOException("CSRFToken 리스폰 실패", e);
+            throw new KOBISCSRFTokenFailException ("CSRFToken 리스폰 실패", e);
         }
     }
 
