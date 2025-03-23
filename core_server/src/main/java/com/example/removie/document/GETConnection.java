@@ -14,7 +14,7 @@ public class GETConnection implements DocConnection {
 
     @Override
     public Document response() throws IOException {
-        return connection.get();
+        return connection.timeout(15000).get();
     }
 
     @Override
