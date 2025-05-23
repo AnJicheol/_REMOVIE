@@ -14,6 +14,35 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+
+
+/**
+ * KOBIS 문서 파싱 과정의 호출 경로 및 URL 요청 횟수를 추적하는 AOP 컴포넌트입니다.
+ * <p>
+ * {@link com.example.removie.document.KOBISCall} 애너테이션이 붙은 메서드를 기준으로
+ * 호출자 클래스명을 추적하고, 이후 {@code KOBISDocConnect.responseDoc(..)} 메서드에서 사용된
+ * URL 요청 정보를 수집하여 호출 횟수를 기록합니다.
+ * </p>
+ *
+ * <p>
+ * 추적 정보는 {@code UpdateServiceImpl.runUpdate*()} 메서드 실행 종료 시점에 로그로 출력되며,
+ * URL별 호출 횟수 및 호출한 클래스명을 함께 제공합니다.
+ * </p>
+ *
+ * <p>
+ * @@@ 해당 프로세스는 단일 스레드에서 작동합니다 @@@
+ *
+ * 단 내부적으로는 {@code ThreadLocal<Stack<String>>}을 통해 호출 스택을 관리하고,
+ * {@code ConcurrentMap}을 통해 멀티스레드 환경에서도 안전하게 URL 호출 기록을 집계합니다.
+ * </p>
+ *
+ * <p>
+ * 애플리케이션 종료 시점에는 {@link PreDestroy}를 통해 스레드 로컬 및 맵 자원을 정리합니다.
+ * </p>
+ *
+ * @author An_Jicheol
+ * @version 2.0
+ */
 @Aspect
 @Component
 public class ParsingMonitoringAspect {
@@ -71,6 +100,4 @@ public class ParsingMonitoringAspect {
         methodCallStack.remove();
         trackingMap.clear();
     }
-
-
 }

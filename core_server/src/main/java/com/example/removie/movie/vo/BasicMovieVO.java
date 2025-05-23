@@ -23,5 +23,4 @@ public class BasicMovieVO{
         this.movieCode = movieCode;
         this.ranking = ranking;
     }
-
 }

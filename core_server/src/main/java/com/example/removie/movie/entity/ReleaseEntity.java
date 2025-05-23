@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @Entity
 @NoArgsConstructor
+@Table(name = "release_info")
 public class ReleaseEntity {
 
     @Id
@@ -16,13 +17,16 @@ public class ReleaseEntity {
     private Long id;
 
     @NotNull
+    @Column(name = "version", nullable = false)
     private Integer version;
 
     @NotNull
     @NotEmpty
+    @Column(name = "movie_code", nullable = false)
     private String movieCode;
 
     @NotNull
+    @Column(name = "ranking", nullable = false)
     private Integer ranking;
 
     @Builder

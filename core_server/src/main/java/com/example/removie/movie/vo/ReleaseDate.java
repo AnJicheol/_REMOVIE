@@ -6,21 +6,19 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Getter
 public class ReleaseDate {
 
     @NotBlank
     private final String movieCode;
-    private final List<LocalDate> releaseDate;
+    private final LocalDate releaseDate;
 
-    public ReleaseDate(@NonNull String movieCode, @NonNull List<LocalDate> releaseDate) {
+    public ReleaseDate(@NonNull String movieCode, @NonNull LocalDate releaseDate1) {
         this.movieCode = movieCode;
-        this.releaseDate = releaseDate;
+        this.releaseDate = releaseDate1;
     }
 
-    public int getReleaseDateSize(){
-        return releaseDate.size();
-    }
+
 }

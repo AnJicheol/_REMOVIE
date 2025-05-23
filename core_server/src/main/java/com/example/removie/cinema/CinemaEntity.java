@@ -19,9 +19,9 @@ public class CinemaEntity {
     private String movieCode;
 
     @NotBlank
-    private List<CinemaData> cinemaDataList;
+    private List<String> cinemaDataList;
 
-    public CinemaEntity(@NonNull String movieCode, @NonNull List<CinemaData> cinemaDataList) {
+    public CinemaEntity(@NonNull String movieCode, @NonNull List<String> cinemaDataList) {
         this.movieCode = movieCode;
         this.cinemaDataList = cinemaDataList;
     }

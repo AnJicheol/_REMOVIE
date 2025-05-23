@@ -2,14 +2,12 @@ package com.example.removie.movie.repository;
 
 import com.example.removie.movie.entity.MovieDataEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+
 
 @Repository
 public interface MovieRepository extends JpaRepository<MovieDataEntity, Long> {
-
+    boolean existsByMovieCode(String movieCode);
 
 }

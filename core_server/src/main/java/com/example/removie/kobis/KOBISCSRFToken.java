@@ -4,6 +4,7 @@ import com.example.removie.document.kobis.KOBIS;
 import com.example.removie.kobis.exception.KOBISCSRFTokenFailException;
 import com.example.removie.kobis.exception.KOBISCSRFTokenNullException;
 import com.example.removie.retry.IORetry;
+import jakarta.annotation.Nonnull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,7 +21,7 @@ import java.io.IOException;
  * 파싱에 필요한 CORSTOken을 생성하는 클래스입니다.
  *
  * @author An_Jicheol
- * @version 1.0
+ * @version 2.0
  */
 @Component
 public class KOBISCSRFToken {
@@ -37,7 +38,7 @@ public class KOBISCSRFToken {
      */
     @IORetry
     @Cacheable(value = "token")
-    public String getCSRFToken(){
+    public @Nonnull String getCSRFToken(){
 
         try {
             Document document = Jsoup.connect(KOBIS.KOBIS_MAIN_URI.getValue()).timeout(15000).get();

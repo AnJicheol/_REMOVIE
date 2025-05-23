@@ -1,22 +1,19 @@
 package com.example.removie.movie.entityMapper;
 
+
 import com.example.removie.movie.entity.NewMovieEntity;
-import com.example.removie.movie.vo.NewMovieVO;
-import org.springframework.stereotype.Component;
-
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
+
 public class NewMovieEntityMapper {
-
-    public List<NewMovieEntity> getNewMovieListByVO(List<NewMovieVO> newMovieVOList, Integer version){
-        return newMovieVOList.stream()
-                .map(newMovieVO -> new NewMovieEntity(
-                        version,
-                        newMovieVO.getRanking(),
-                        newMovieVO.getMovieCode()
-                ))
-                .collect(Collectors.toList());
+    public static @Nonnull List<NewMovieEntity> getNewMovieEntity(@NotNull List<String> movieCodeList, @NotNull Integer version){
+        return movieCodeList.stream()
+                .map(movieCode -> NewMovieEntity.builder()
+                        .movieCode(movieCode)
+                        .version(version).build())
+                .toList();
     }
+
 }

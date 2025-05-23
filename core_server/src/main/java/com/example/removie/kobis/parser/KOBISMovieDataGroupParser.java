@@ -4,6 +4,7 @@ import com.example.removie.document.DocConnect;
 import com.example.removie.document.KOBISCall;
 import com.example.removie.document.kobis.KOBISPage;
 import com.example.removie.kobis.exception.MovieGroupFailException;
+import jakarta.annotation.Nonnull;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
  * <p>파싱 성능을 높이기 위해 페이지를 최소한에 요소 단위로 분리합니다.</p>
  *
  * @author An_Jicheol
- * @version 1.0
+ * @version 2.0
  */
 @Component
 public class KOBISMovieDataGroupParser {
@@ -41,7 +42,7 @@ public class KOBISMovieDataGroupParser {
      * @return 영화별 파싱에 필요한 HTML 정보를 리턴합니다.
      */
     @KOBISCall
-    public Elements getMovieDataGroup(){
+    public @Nonnull Elements getMovieDataGroup(){
         Document document = docConnect.responseDoc(kobisPage.mainPage());
         Elements elements = document.select(MOVIE_ELEMENTS_CSS_QUERY);
         validateElements(elements);

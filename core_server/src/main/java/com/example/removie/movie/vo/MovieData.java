@@ -1,32 +1,38 @@
 package com.example.removie.movie.vo;
 
 
-import jakarta.validation.constraints.NotBlank;
+import com.example.removie.kobis.wrapper.GenreVO;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.ToString;
 
+import java.util.List;
 
-@Builder
+
 @Getter
 @ToString
+@Builder
 public class MovieData {
 
-    @NotBlank
+    @JsonProperty(...blind...)
     private final String title;
 
-    @NotBlank
+    @JsonProperty(...blind...)
     private final String movieCode;
-    private final String posterIMG;
-    private final String info;
+
+    @JsonProperty(...blind...)
+    private final List<GenreVO> genreVOList;
 
 
-    public MovieData(@NonNull String title, @NonNull String movieCode, String posterIMG, String info) {
+    public MovieData(
+            @JsonProperty(...blind...) String title,
+            @JsonProperty(...blind...) String movieCode,
+            @JsonProperty(...blind...) List<GenreVO> genreVOList
+    ) {
         this.title = title;
         this.movieCode = movieCode;
-        this.posterIMG = posterIMG;
-        this.info = info;
+        this.genreVOList = genreVOList;
     }
 
 }

@@ -1,19 +1,19 @@
 package com.example.removie.movie.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "release_date")
 public class ReleaseDateEntity {
 
     @Id
@@ -22,11 +22,15 @@ public class ReleaseDateEntity {
 
     @NotNull
     @NotEmpty
+    @Column(name = "movie_code", nullable = false)
     private String movieCode;
+
     @NotNull
+    @Column(name = "release_date", nullable = false)
     private LocalDate releaseDate;
 
-    public ReleaseDateEntity(String movieCode, LocalDate releaseDate) {
+    @Builder
+    public ReleaseDateEntity(@NonNull String movieCode, @NonNull LocalDate releaseDate) {
         this.movieCode = movieCode;
         this.releaseDate = releaseDate;
     }

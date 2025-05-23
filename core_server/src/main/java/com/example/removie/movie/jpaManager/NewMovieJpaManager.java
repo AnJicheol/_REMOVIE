@@ -1,30 +1,25 @@
 package com.example.removie.movie.jpaManager;
 
-
-import com.example.removie.movie.entityMapper.NewMovieEntityMapper;
-import com.example.removie.movie.vo.NewMovieVO;
+import com.example.removie.movie.entity.NewMovieEntity;
 import com.example.removie.movie.repository.NewMovieRepository;
 import com.example.removie.retry.IORetry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
-public class NewMovieJpaManager {
+public class NewMovieJpaManager implements UpdateJpaManager<List<NewMovieEntity>>{
     private final NewMovieRepository newMovieRepository;
-    private final NewMovieEntityMapper newMovieEntityMapper;
 
-    @Autowired
-    public NewMovieJpaManager(NewMovieRepository newMovieRepository, NewMovieEntityMapper newMovieEntityMapper) {
+    public NewMovieJpaManager(NewMovieRepository newMovieRepository) {
         this.newMovieRepository = newMovieRepository;
-        this.newMovieEntityMapper = newMovieEntityMapper;
     }
 
     @IORetry
+    @Override
     @Transactional
-    public void saveAllNewMovieVO(List<NewMovieVO> newMovieVOList, Integer version){
-        newMovieRepository.saveAll(newMovieEntityMapper.getNewMovieListByVO(newMovieVOList, version));
+    public void update(List<NewMovieEntity> newMovieEntities) {
+        newMovieRepository.saveAll(newMovieEntities);
     }
 }

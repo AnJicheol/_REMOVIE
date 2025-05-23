@@ -1,8 +1,7 @@
 package com.example.removie.movie.jpaManager;
 
 
-import com.example.removie.movie.entityMapper.MovieDataEntityMapper;
-import com.example.removie.movie.vo.MovieData;
+import com.example.removie.movie.entity.MovieDataEntity;
 import com.example.removie.movie.repository.MovieRepository;
 import com.example.removie.retry.IORetry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,21 +11,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-public class MovieJpaManager {
+public class MovieJpaManager implements UpdateJpaManager<List<MovieDataEntity>>{
     private final MovieRepository movieRepository;
-    private final MovieDataEntityMapper movieDataEntityMapper;
-
 
     @Autowired
-    public MovieJpaManager(MovieRepository movieRepository, MovieDataEntityMapper movieDataEntityMapper) {
+    public MovieJpaManager(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
-        this.movieDataEntityMapper = movieDataEntityMapper;
     }
 
     @IORetry
     @Transactional
-    public void saveAllMovieData(List<MovieData> movieDataList){
-        movieRepository.saveAll(movieDataEntityMapper.getMovieDataEntityListByVO(movieDataList));
+    public void saveAllMovieData(List<MovieDataEntity> movieDataList){
+        movieRepository.saveAll(movieDataList);
     }
+
+    @IORetry
+    @Transactional(readOnly = true)
+    public boolean notExistsByMovieCode(String movieCode){
+        return !movieRepository.existsByMovieCode(movieCode);
+    }
+
+    @Override
+    @Transactional
+    public void update(List<MovieDataEntity> movieDataList) {
+        saveAllMovieData(movieDataList);
+    }
+
 
 }

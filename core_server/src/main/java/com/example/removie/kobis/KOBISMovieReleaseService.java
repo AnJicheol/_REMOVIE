@@ -3,7 +3,6 @@ package com.example.removie.kobis;
 
 import com.example.removie.kobis.parser.KOBISMovieCodeParser;
 import com.example.removie.kobis.parser.KOBISMovieDataGroupParser;
-import com.example.removie.movie.NewReleaseMap;
 import com.example.removie.movie.vo.BasicMovieVO;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import java.util.Map;
  * 최신 영화 정보를 생성하는 서비스입니다. 최신 상영정보와 영화 코드 등이 포함됩니다.
  *
  * @author An_Jicheol
- * @version 1.0
+ * @version 2.0
  */
 @Service
 public class KOBISMovieReleaseService implements NewReleasesService {
@@ -31,7 +30,7 @@ public class KOBISMovieReleaseService implements NewReleasesService {
     }
 
 
-     /**
+    /**
      * 신규 개봉 영화 목록을 파싱 하여 반환합니다.
      *{@link KOBISMovieDataGroupParser#getMovieDataGroup()}는
      * 개별 영화를 파싱 하기 위한 HTML 요소를 가져옵니다.
@@ -48,9 +47,10 @@ public class KOBISMovieReleaseService implements NewReleasesService {
 
         int ranking = 1;
         for (Element element : kobisMovieDataGroupParser.getMovieDataGroup()){
+
             BasicMovieVO movieVO = BasicMovieVO.builder().
                     ranking(ranking++).
-                    movieCode(kobisMovieCodeParser.getParsingResult(element)).
+                    movieCode(kobisMovieCodeParser.getMovieIdentity(element)).
                     build();
             resultMap.put(movieVO.getMovieCode(), movieVO);
         }

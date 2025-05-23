@@ -1,37 +1,36 @@
 package com.example.removie.movie.entity;
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-@Entity
 @Getter
 @NoArgsConstructor
-public class NewMovieEntity{
+@Entity
+@Table(name = "new_movie")
+public class NewMovieEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @NotNull
-    private Integer version;
-
-    @Column(nullable = false)
-    @NotNull
-    private Integer ranking;
-
-    @Column(nullable = false)
+    @Column(name = "movie_code", nullable = false)
     @NotNull
     @NotEmpty
     private String movieCode;
 
-    public NewMovieEntity(@NonNull Integer version, @NonNull Integer ranking, @NonNull String movieCode) {
-        this.version = version;
-        this.ranking = ranking;
-        this.movieCode = movieCode;
-    }
+    @Column(nullable = false, name = "version")
+    @NotNull
+    private Integer version;
 
+    @Builder
+    public NewMovieEntity(@NonNull String movieCode, @NonNull Integer version) {
+        this.movieCode = movieCode;
+        this.version = version;
+    }
 }

@@ -1,44 +1,49 @@
 package com.example.removie.cinema.kobis;
 
 import com.example.removie.cinema.exception.CinemaParsingFailException;
-import com.example.removie.cinema.CinemaData;
 import com.example.removie.cinema.CinemaInfoProvider;
 import com.example.removie.log.LogGroup;
+import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotBlank;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 /**
  * 영화관 정보 파싱하는 클래스입니다.
  *
  * @author An_Jicheol
- * @version 1.0
+ * @version 2
  */
 @Component
 public class KOBISCinemaDataParser {
     private final static Pattern CINEMA_CODE_REGEX_PATTERN = Pattern.compile("onclick=\"fn_theaNmClick\\(this, '.*?', '(.*?)', '.*?'\\)");
     private static final Logger logger = LoggerFactory.getLogger(KOBISCinemaDataParser.class);
 
+    private final CinemaInfoProvider cinemaInfoProvider;
+
+    @Autowired
+    public KOBISCinemaDataParser(CinemaInfoProvider cinemaInfoProvider) {
+        this.cinemaInfoProvider = cinemaInfoProvider;
+    }
 
     /**
-     * 상영중인 영화관 코드를 파싱 후 {@link CinemaData} 객체로 생성합니다.
+     * HTML 요소에서 영화관 정보를 추출합니다.
+     * 정규식 패턴을 사용해 영화관 관련 정보를 파싱하고,
      *
-     * @param element 특정 영화의 상영관 페이지를 포함한 객체입니다.
-     *
-     * @return 추출된 영화관 정보를 포함한 {@link CinemaData} 객체를 반환합니다.
-     * @throws CinemaParsingFailException 정규식 매칭 실패 시 발생하는 예외입니다.
+     * @param element 영화관 정보가 포함된 HTML 요소 (비어 있으면 안 됨)
+     * @return 추출된 영화관 정보
+     * @throws CinemaParsingFailException 정규식 패턴과 일치하지 않을 경우 발생
      */
-    public CinemaData extractCinemaData(@NotBlank Element element) {
+    public @Nonnull String extractCinemaData(@NotBlank Element element) {
         Matcher matcher = getMatcher(element);
         verifiedMatcher(matcher, element);
 
-        CinemaData cinemaData = CinemaInfoProvider.getMovieInfo(matcher.group(1));
+        String cinemaData = cinemaInfoProvider.getMovieInfo(matcher.group(1));
         verifiedCinemaData(cinemaData, element);
         return cinemaData;
     }
@@ -47,6 +52,14 @@ public class KOBISCinemaDataParser {
         return CINEMA_CODE_REGEX_PATTERN.matcher(element.toString());
     }
 
+    /**
+     * 정규식 매칭 결과(Matcher)가 유효한지 검사합니다.
+     * 매칭에 실패할 경우 로그를 남기고 예외를 발생시킵니다.
+     *
+     * @param matcher 정규식 매칭 결과
+     * @param element 검사 대상인 HTML 요소
+     * @throws CinemaParsingFailException 정규식 매칭 실패 시 발생
+     */
     private void verifiedMatcher(Matcher matcher, Element element){
         if (!matcher.find()) {
             log("패턴 매칭 실패", element);
@@ -54,21 +67,8 @@ public class KOBISCinemaDataParser {
         }
     }
 
-    /**
-     * 영화관 코드에 유효성을 검증합니다.
-     *
-     * <p>
-     * {@link CinemaInfoProvider} 에 등록되지 않은 값을 검증하며,
-     * 잘못 파싱 된 값을 방지하기 위한 조치입니다.
-     * </p>
-     *
-     * <p>{@code cinemaData.isINVALID()} 는 빈객체 입니다.</p>
-     *
-     * @param cinemaData 추출된 상영관 데이터입니다.
-     * @param element 원본 HTML Element입니다.
-     */
-    private void verifiedCinemaData(CinemaData cinemaData, Element element){
-        if (cinemaData.isINVALID()) {
+    private void verifiedCinemaData(String cinemaData, Element element){
+        if (cinemaData == null) {
             log("영화관 코드가 유효하지 않음", element);
         }
     }

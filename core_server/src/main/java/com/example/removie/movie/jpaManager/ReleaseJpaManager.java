@@ -1,11 +1,11 @@
 package com.example.removie.movie.jpaManager;
 
 
-import com.example.removie.movie.entityMapper.ReleaseEntityMapper;
-import com.example.removie.movie.vo.CurrentMovieVO;
+import com.example.removie.movie.entity.ReleaseEntity;
+import com.example.removie.movie.vo.BasicMovieVO;
 import com.example.removie.movie.repository.ReleaseRepository;
 import com.example.removie.retry.IORetry;
-import com.example.removie.version.VersionService;
+import com.example.removie.version.VersionJpaManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,27 +14,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-public class ReleaseJpaManager {
+public class ReleaseJpaManager implements UpdateJpaManager<List<ReleaseEntity>>{
     private final ReleaseRepository releaseRepository;
-    private final ReleaseEntityMapper releaseEntityMapper;
-    private final VersionService versionService;
+    private final VersionJpaManager versionJpaManager;
 
     @Autowired
-    public ReleaseJpaManager(ReleaseRepository releaseRepository, ReleaseEntityMapper releaseEntityMapper, VersionService versionService){
+    public ReleaseJpaManager(ReleaseRepository releaseRepository, VersionJpaManager versionJpaManager){
         this.releaseRepository = releaseRepository;
-        this.releaseEntityMapper = releaseEntityMapper;
-        this.versionService = versionService;
+        this.versionJpaManager = versionJpaManager;
     }
 
     @IORetry
     @Transactional
-    public List<CurrentMovieVO> getCurrentMovieList(){
-        return releaseRepository.findByVersion(versionService.getCurrentVersion());
+    public List<BasicMovieVO> getLatestMovieList(){
+        return releaseRepository.findByVersion(versionJpaManager.getLatestVersion());
     }
 
     @IORetry
     @Transactional
-    public void saveCurrentMovieList(List<CurrentMovieVO> currentMovieVOList, Integer version){
-        releaseRepository.saveAll(releaseEntityMapper.getReleaseEntityByVO(currentMovieVOList, version));
+    public void saveCurrentMovieList(List<ReleaseEntity> releaseEntityList){
+        releaseRepository.saveAll(releaseEntityList);
+    }
+
+    @Override
+    @Transactional
+    public void update(List<ReleaseEntity> releaseEntityList) {
+        saveCurrentMovieList(releaseEntityList);
     }
 }
