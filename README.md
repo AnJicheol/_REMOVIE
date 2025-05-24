@@ -4,7 +4,7 @@
 - **프로젝트 명칭:** REMOVIE
 - **개발 인원:** 1명
 - **개발 기간:** 2024.09 - 2025.01
-
+.
 ![동작](https://github.com/user-attachments/assets/7ecb203c-98bc-42f5-b572-4b21aabb6db3)
 
 
