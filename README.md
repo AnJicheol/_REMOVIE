@@ -32,14 +32,6 @@ Removie는 **재개봉 영화 알림 서비스** 입니다.
 
 # 백엔드 서버
 
-## **✅ 주요 기능**
-
-1. API 통신
-
-![backend](https://github.com/user-attachments/assets/047dcd5e-6809-41ee-b77b-38840af823f1)
-
-
-
 
 ## **⚙️ 개발 환경**
 
@@ -82,6 +74,14 @@ Retry & Backoff: Lambda가 서버 역할을 수행하는 동안, 요청 재시�
 | GET | `/movie`           | 영화 제목으로 영화 정보 조회   | `movieTitle`      | JSON  |
 
 
+## **📌 인프라**
+
+
+
+![backend](https://github.com/user-attachments/assets/047dcd5e-6809-41ee-b77b-38840af823f1)
+
+
+
 # 코어 서버
 
 
@@ -90,9 +90,6 @@ Retry & Backoff: Lambda가 서버 역할을 수행하는 동안, 요청 재시�
 1. 영화 데이터 파싱
 2. DB 쓰기 작업
 3. Redis 쓰기 작업
-
-
-![core](https://github.com/user-attachments/assets/a13d3532-3bb4-4104-924d-3225e81f461f)
 
 
 ## **⚙️ 개발 환경**
@@ -122,6 +119,11 @@ Retry & Backoff: Lambda가 서버 역할을 수행하는 동안, 요청 재시�
 
 - IntelliJ IDEA
 - Gradle
+
+
+## **📌 인프라**
+![core](https://github.com/user-attachments/assets/a13d3532-3bb4-4104-924d-3225e81f461f)
+
 
 
 ## **📌 Movie Process**
